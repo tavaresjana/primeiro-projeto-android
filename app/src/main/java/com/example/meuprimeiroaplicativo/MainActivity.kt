@@ -3,6 +3,9 @@ package com.example.meuprimeiroaplicativo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -31,5 +34,20 @@ class MainActivity : ComponentActivity() {
 
 @Composable
 fun App(){
-    Text(text = "Hello world Android")
+/* Box{
+     Text(text = "Alcool ou gasolina")
+     Text(text = "Gasolina")
+     
+ }
+   Column {
+       Text(text = "Alcool ou gasolina")
+       Text(text = "Gasolina")
+       //cada um numa linha vertical
+   }*/
+ Row {
+     Text(text = "Alcool ou gasolina")
+     Text(text = "Gasolina")
+     //um do lado do outro
+ }
+
 }
