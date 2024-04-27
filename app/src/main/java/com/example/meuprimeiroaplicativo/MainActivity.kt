@@ -3,6 +3,7 @@ package com.example.meuprimeiroaplicativo
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -48,9 +49,9 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun App(){
+fun App() {
 
-    var valorGasolina = remember {
+    var valorGasolina by remember {
         mutableStateOf("")
     }
     var valorAlcool by remember {
@@ -59,62 +60,79 @@ fun App(){
 
 
 
-   Column (
-       Modifier
-           .background(color = Color(0xBAA67AAD))
-           .fillMaxSize(),
-           verticalArrangement = Arrangement.Center,
-           horizontalAlignment = Alignment.CenterHorizontally,
-       ){
-       Column (
-           verticalArrangement = Arrangement.spacedBy(16.dp),
-           horizontalAlignment = Alignment.CenterHorizontally
-       )
-       {
-           Text(
-               text = "Álcool ou Gasolina?",
-               style = TextStyle(
-                   color = Color.White,
-                   fontSize = 32.sp,
-                   fontWeight = FontWeight.Bold
-               )
-           )
+    Column(
+        Modifier
+            .background(color = Color(0xBAA67AAD))
+            .fillMaxSize(),
+        verticalArrangement = Arrangement.Center,
+        horizontalAlignment = Alignment.CenterHorizontally,
+    ) {
+        Column(
+            verticalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        )
+        {
+            Text(
+                text = "Álcool ou Gasolina?",
+                style = TextStyle(
+                    color = Color.White,
+                    fontSize = 32.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            )
 
-           Text(
-               text = "Gasolina",
-               style = TextStyle(
-                   color = Color.DarkGray,
-                   fontSize = 40.sp,
-                   fontWeight = FontWeight.Bold
-               )
-           )
+            AnimatedVisibility(visible = valorAlcool.isNotBlank() && valorGasolina.isNotBlank()) {
+                if(valorAlcool.isNotBlank() && valorGasolina.isNotBlank()){
+                    val ehGasolina = valorGasolina.toDouble() / valorAlcool.toDouble() > 0.7;
+                    val alcoolOuGasolina = if (ehGasolina) {
+                        "Gasolina"
+                    } else {
+                        "Álcool"
+                    }
+                    val cor = if (ehGasolina) {
+                        Color.DarkGray
+                    } else {
+                        Color.LightGray
+                    }
+                    Text(
+                        text = alcoolOuGasolina,
+                        style = TextStyle(
+                            color = Color.DarkGray,
+                            fontSize = 40.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    )
+                }
+            }
 
-           TextField(
-               value = valorGasolina.value,
-               onValueChange = { novoValor ->
-                   valorGasolina.value = novoValor
-               },
-               label = {
-                   Text(text = "Gasolina")
-               }
-           )
-           TextField(
-               value = valorAlcool,
-               onValueChange = {
-                   valorAlcool = it
-               },
-               label = {
-                   Text(text = "Álcool")
-               }
-           )
-       }
-   }
+
+
+            TextField(
+                value = valorGasolina,
+                onValueChange = {
+                    valorGasolina = it
+                },
+                label = {
+                    Text(text = "Gasolina")
+                }
+            )
+            TextField(
+                value = valorAlcool,
+                onValueChange = {
+                    valorAlcool = it
+                },
+                label = {
+                    Text(text = "Álcool")
+                }
+            )
+        }
+    }
 }
 
 //pra ver
 @Preview
 @Composable
-fun AppPreview(){
+fun AppPreview() {
     MeuPrimeiroAplicativoTheme {
         App()
     }
